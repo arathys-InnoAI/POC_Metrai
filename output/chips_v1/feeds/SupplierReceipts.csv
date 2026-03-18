@@ -1,0 +1,2 @@
+PurchaseOrderNumber,LineNumber,ReceiptDate,SiteCode,ItemCode,ReceivedQuantity,SupplierCode
+PO_chips_v1_20240101_DC_EAST_0001,1,2024-01-04,DC_EAST,CHIPS_001,370,SUP_001

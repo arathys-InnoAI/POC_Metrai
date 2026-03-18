@@ -1,0 +1,2 @@
+PurchaseOrderNumber,LineNumber,SiteCode,ItemCode,OrderQuantity,UOM,UnitCost
+PO_chips_v1_20240101_DC_EAST_0001,1,DC_EAST,CHIPS_001,370,EA,1.2

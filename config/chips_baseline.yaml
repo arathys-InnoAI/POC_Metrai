@@ -1,0 +1,104 @@
+# ─── Identity ───────────────────────────────────────────────────────────
+seed: 42
+run_id: chips_v1
+scenario: chips_baseline
+start_date: "2024-01-01"
+days: 7
+currency: USD
+
+# ─── Network ────────────────────────────────────────────────────────────
+stores:
+  - code: STORE_101
+    name: Store 101
+    region: East
+
+dcs:
+  - code: DC_EAST
+    name: DC East
+
+suppliers:
+  - code: SUP_001
+    name: Snack Co
+    lead_time_days: 3          # supplier → DC transit (days)
+
+items:
+  - code: CHIPS_001
+    name: Classic Potato Chips 8oz
+    velocity: fast             # fast | medium | slow | lumpy
+    supplier: SUP_001
+    unit_price: 2.50
+    cost_price: 1.20
+    uom: EA
+
+# ─── Starting inventory ─────────────────────────────────────────────────
+initial_inventory:
+  STORE_101:
+    CHIPS_001: 100
+  DC_EAST:
+    CHIPS_001: 500
+
+# ─── Timing ─────────────────────────────────────────────────────────────
+dc_to_store_lead_time_days: 1  # 1 = chips example 1 day transit
+
+# ─── Demand ─────────────────────────────────────────────────────────────
+base_demand:
+  CHIPS_001: 30                # units/day baseline
+
+# ─── Replenishment ──────────────────────────────────────────────────────
+replenishment:
+  store_coverage_days:
+    fast:   7
+    medium: 10
+    slow:   14
+    lumpy:  21
+  dc_coverage_days: 28
+  smoothing_window_days: 7     # use full history length (min 7) for moving avg
+  review_day: monday           # DC places supplier POs once per week
+
+# ─── Receipt randomness ─────────────────────────────────────────────────
+receipt_randomness:
+  p_late: 0.0                  # Milestone 1-3: no randomness
+  late_days_min: 1
+  late_days_max: 5
+  p_partial: 0.0
+  partial_frac_min: 0.5
+  partial_frac_max: 0.9
+  remainder_delay_min: 2
+  remainder_delay_max: 7
+
+# ─── Replenishment policy ───────────────────────────────────────────────
+# demand_driven: ship PRIOR-DAY demand → arrives at store after 1-day transit (1-for-1 replacement)
+# coverage_based: use moving average × coverage_days (for large-scale scenarios)
+replenishment_policy: demand_driven
+
+# ─── Scheduled events ───────────────────────────────────────────────────
+promo_events:
+  - item: CHIPS_001
+    store: STORE_101
+    start_day: 3
+    end_day: 4
+    multiplier: 2.0
+
+# Day 7 demand tapering (45 instead of 60 — partial promo end)
+demand_override_events:
+  - item: CHIPS_001
+    store: STORE_101
+    day: 7
+    quantity: 45
+
+# NOTE: shortage days = SHIPPING days (1-day transit → arrival = shortage_day + 1)
+# shortage ships days 4-5  →  stores receive 20 on days 5-6  ✓
+shortage_events:
+  - item: CHIPS_001
+    dc: DC_EAST
+    start_day: 4
+    end_day: 5
+    max_ship_per_day: 20
+
+# NOTE: override day = SHIPPING day (1-day transit → arrival = override_day + 1)
+# ships 50 on day 6  →  store receives 50 on day 7  ✓
+dc_ship_override_events:
+  - item: CHIPS_001
+    dc: DC_EAST
+    day: 6
+    ship_qty: 50

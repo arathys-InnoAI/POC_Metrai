@@ -1,0 +1,46 @@
+{
+  "run_id": "chips_v1",
+  "all_checks_passed": true,
+  "row_counts": {
+    "SiteInformation": 2,
+    "ItemInformation": 1,
+    "SupplierInformation": 1,
+    "InventoryInformation": 14,
+    "SupplierOrderHeader": 1,
+    "SupplierOrderLine": 1,
+    "SupplierReceipts": 1,
+    "CustomerOrderHeader": 7,
+    "CustomerOrderLine": 7,
+    "CustomerOrderDelivery": 7,
+    "SalesHistoryInformation": 7,
+    "CalendarPeriod": 189,
+    "Currency": 1
+  },
+  "checks": {
+    "A_schema": {
+      "passed": true,
+      "error_count": 0,
+      "errors": []
+    },
+    "B_referential_integrity": {
+      "passed": true,
+      "error_count": 0,
+      "errors": []
+    },
+    "C_non_negativity": {
+      "passed": true,
+      "error_count": 0,
+      "errors": []
+    },
+    "D_consistency": {
+      "passed": true,
+      "error_count": 0,
+      "errors": []
+    },
+    "E_reconciliation": {
+      "passed": true,
+      "error_count": 0,
+      "errors": []
+    }
+  }
+}
