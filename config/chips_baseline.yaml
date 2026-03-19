@@ -11,6 +11,7 @@ stores:
   - code: STORE_101
     name: Store 101
     region: East
+    popularity: 1.0
 
 dcs:
   - code: DC_EAST
@@ -43,6 +44,11 @@ dc_to_store_lead_time_days: 1  # 1 = chips example 1 day transit
 # ─── Demand ─────────────────────────────────────────────────────────────
 base_demand:
   CHIPS_001: 30                # units/day baseline
+
+# ─── Demand Realism (Phase 2) ───────────────────────────────────────────
+seasonality:
+  weekend: 1.0                 # Sat/Sun multiplier (1.0 = no lift)
+demand_noise: 0.0              # Gaussian noise sigma (0.0 = deterministic)
 
 # ─── Replenishment ──────────────────────────────────────────────────────
 replenishment:

@@ -25,6 +25,9 @@ class Config:
     receipt_randomness: Dict[str, Any]
     replenishment_policy: str = 'coverage_based'  # 'demand_driven' | 'coverage_based'
 
+    seasonality: Dict[str, float] = field(default_factory=dict)
+    demand_noise: float = 0.0
+
     promo_events: List[Dict[str, Any]] = field(default_factory=list)
     shortage_events: List[Dict[str, Any]] = field(default_factory=list)
     demand_override_events: List[Dict[str, Any]] = field(default_factory=list)
@@ -51,6 +54,8 @@ def load_config(path: str | Path) -> Config:
         replenishment=data.get('replenishment', {}),
         receipt_randomness=data.get('receipt_randomness', {}),
         replenishment_policy=data.get('replenishment_policy', 'coverage_based'),
+        seasonality=data.get('seasonality', {}),
+        demand_noise=data.get('demand_noise', 0.0),
         promo_events=data.get('promo_events', []),
         shortage_events=data.get('shortage_events', []),
         demand_override_events=data.get('demand_override_events', []),

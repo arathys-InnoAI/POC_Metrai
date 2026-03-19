@@ -1,6 +1,6 @@
 # Retail Data Factory — Phase 1
 
-This tool is a synthetic data generator designed to create high-fidelity, consistent retail datasets for demand planning software (specifically JustEnough). It simulates a realistic "world" of stores, DCs, and suppliers through an 8-step daily simulation loop.
+This tool is a synthetic data generator designed to create high-fidelity, consistent retail datasets for demand planning software. It simulates a realistic "world" of stores, DCs, and suppliers.
 
 ## 🚀 Quick Start
 
@@ -39,16 +39,14 @@ python -m pytest tests/ -v
 
 ## 🛠 Features
 
-### 8-Step Daily Loop
-The simulation follows a strict order every day to ensure data integrity:
-1. **Supplier Receipts** arrive at DC.
-2. **DC → Store Receipts** arrive at stores.
-3. **Customer Orders** generated from demand matrix.
-4. **Replenishment Need** computed (1-for-1 or coverage-based).
-5. **DC Shipments** allocated to stores (respecting DC inventory + shortages).
-6. **Store Deliveries** fulfilled (respecting store inventory).
-7. **Sales History** written based on deliveries.
-8. **Supplier POs** created (Mondays) and **Inventory Snapshots** saved.
+### Multiplicative Demand (Phase 2 Realism)
+The demand model uses a professional multiplicative formula for realistic compound effects:
+**`Demand = Base * StorePopularity * Seasonality * Promotion * (1 + Noise)`**
+- **StorePopularity**: Multiplier per site (e.g. 1.2 for flagships).
+- **Seasonality**: Weekend lifts (e.g. +15% on Sat/Sun).
+- **Promotion**: Compound multipliers (e.g. 2.0x promo).
+- **Stochastic Noise**: Gaussian "fuzziness" seeded for repeatability.
+- **Overrides**: Absolute priority overrides for precise scenario matching.
 
 ### Dual Replenishment Policies
 - `demand_driven`: Ship today exactly what was sold yesterday. Perfect for exact demo scenarios.
