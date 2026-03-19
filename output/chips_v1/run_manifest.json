@@ -1,11 +1,12 @@
 {
   "run_id": "chips_v1",
   "scenario": "chips_baseline",
-  "timestamp": "2026-03-19T13:43:00.879314",
+  "timestamp": "2026-03-19T16:37:04.731753",
   "records_generated": {
     "SiteInformation": 2,
     "ItemInformation": 1,
     "SalesHistoryInformation": 7,
-    "InventoryInformation": 14
+    "InventoryInformation": 14,
+    "StoreReceipts": 7
   }
 }

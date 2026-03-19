@@ -46,8 +46,14 @@ def write_feeds(config, master_data, simulation):
     
     # 11. Sales History
     pd.DataFrame(simulation.sales_history).to_csv(feeds_dir / 'SalesHistoryInformation.csv', index=False)
+
+    # 12. Store Receipts (DC -> Store)
+    if simulation.store_receipt_history:
+        pd.DataFrame(simulation.store_receipt_history).to_csv(feeds_dir / 'StoreReceipts.csv', index=False)
+    else:
+        pd.DataFrame(columns=['ItemCode', 'SiteCode', 'ShipDate', 'ArrivalDate', 'Quantity']).to_csv(feeds_dir / 'StoreReceipts.csv', index=False)
     
-    # 12 & 13. Calendar & Currency
+    # 13 & 14. Calendar & Currency
     master_data.calendar.to_csv(feeds_dir / 'CalendarPeriod.csv', index=False)
     master_data.currency.to_csv(feeds_dir / 'Currency.csv', index=False)
     
@@ -60,7 +66,8 @@ def write_feeds(config, master_data, simulation):
             'SiteInformation': len(sites),
             'ItemInformation': len(items),
             'SalesHistoryInformation': len(simulation.sales_history),
-            'InventoryInformation': len(simulation.inventory_history)
+            'InventoryInformation': len(simulation.inventory_history),
+            'StoreReceipts': len(simulation.store_receipt_history)
         }
     }
     with open(out_dir / 'run_manifest.json', 'w') as f:

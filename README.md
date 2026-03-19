@@ -17,7 +17,12 @@ python run.py --config config/chips_baseline.yaml
 ```
 
 ### 3. Verify the Output
-The tool automatically runs validation checks. You can also run the full test suite manually:
+The tool automatically runs validation checks. You can also view a **Performance Dashboard** for a day-by-day business view:
+```bash
+python src/view_status.py --run-id chips_v1
+```
+
+### 4. Run Automated Tests
 ```bash
 python -m pytest tests/ -v
 ```
@@ -29,9 +34,10 @@ python -m pytest tests/ -v
 - `config/`: YAML files defining scenarios, networks, and event schedules.
 - `src/`: Core engine logic.
   - `simulation.py`: The 8-step daily loop (receipts -> orders -> shipments -> sales).
-  - `demand.py`: Latent demand pre-calculation (promo multipliers & overrides).
+  - `demand.py`: Latent demand pre-calculation (multiplicative formula & overrides).
+  - `view_status.py`: Professional CLI Performance Dashboard.
   - `validator.py`: Implementation of 5 Phase 1 acceptance criteria.
-  - `writers.py`: Generator for the 13 Common Core CSV feeds.
+  - `writers.py`: Generator for the 14 Common Core CSV feeds.
 - `output/`: Generated CSV feeds, manifests, and quality reports.
 - `tests/`: Pytest suite for automated compliance checks.
 
@@ -57,11 +63,12 @@ Seeded runs (`seed: 42`) ensure that the same configuration always produces the 
 
 ---
 
-## 📊 Output Feeds (13 Feeds)
+## 📊 Output Feeds (14 Feeds)
 
-The tool outputs 13 CSV files into `output/<run_id>/feeds/`:
+The tool outputs 14 CSV files into `output/<run_id>/feeds/`:
 - **Master Data**: Site, Item, Supplier, Calendar, Currency.
 - **Transactions**: Supplier Order/Line/Receipt, Customer Order/Line/Delivery, Sales History.
+- **Store Logistics**: **StoreReceipts.csv** (DC → Store shipments & arrival dates).
 - **State**: Inventory Information (daily snapshots).
 
 ---

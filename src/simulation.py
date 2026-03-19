@@ -49,6 +49,7 @@ class Simulation:
         self.po_header_history = []
         self.po_line_history = []
         self.inventory_history = []
+        self.store_receipt_history = []
 
         # Rolling demand history for moving average (coverage_based mode)
         self.requested_history = defaultdict(lambda: defaultdict(list))  # [store][item] → list
@@ -215,6 +216,12 @@ class Simulation:
                                 'item': item, 'store': self.config.stores[0]['code'],
                                 'qty': total_ship
                             })
+                            # Record for status/feeds CLI
+                            self.store_receipt_history.append({
+                                'ItemCode': item, 'SiteCode': self.config.stores[0]['code'],
+                                'ShipDate': d_str, 'ArrivalDate': arrival_date,
+                                'Quantity': total_ship
+                            })
                         continue
 
                     # Normal path: apply shortage cap
@@ -254,6 +261,12 @@ class Simulation:
                             self.on_hand[dc][item] -= ship_qty
                             self.store_receipt_events[arrival_date].append({
                                 'item': item, 'store': store, 'qty': ship_qty
+                            })
+                            # Record for status/feeds CLI
+                            self.store_receipt_history.append({
+                                'ItemCode': item, 'SiteCode': store,
+                                'ShipDate': d_str, 'ArrivalDate': arrival_date,
+                                'Quantity': ship_qty
                             })
 
             # ── Step 6 & 7: Fulfill deliveries + Write Sales ──────────
